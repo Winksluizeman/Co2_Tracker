@@ -1,11 +1,26 @@
-# Gebruik een Java runtime
-FROM openjdk:17-jdk-slim
+# Basisimage met JDK 21
+FROM eclipse-temurin:21-jdk
 
-# Zet de werkdirectory
+# Werkdirectory in de container
 WORKDIR /app
 
-# Kopieer het gebuildde JAR-bestand
-COPY build/libs/backend-0.0.1-SNAPSHOT.jar app.jar
+# Gradle wrapper en build files kopiëren
+COPY gradlew .
+COPY gradle ./gradle
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
 
-# Stel het commando in om je Spring Boot app te starten
-ENTRYPOINT ["java","-jar","app.jar"]
+# Maak gradlew uitvoerbaar
+RUN chmod +x ./gradlew
+
+# Dependencies downloaden (Docker cache wordt gebruikt voor sneller rebuilds)
+RUN ./gradlew build -x test --dry-run
+
+# Rest van de code kopiëren
+COPY src ./src
+
+# Poort exposen waarop Spring Boot draait
+EXPOSE 8080
+
+# Start Spring Boot met hot reload
+CMD ["./gradlew", "bootRun"]
