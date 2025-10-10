@@ -12,7 +12,14 @@ import java.util.List;
 
 @Service
 public class PersoonService implements PersoonServiceInterface {
-    private PersoonDAL dal = new PersoonDAL();
+
+    private final PersoonDAL dal;
+
+    // Spring injecteert automatisch de PersoonDAL
+    @Autowired
+    public PersoonService(PersoonDAL dal) {
+        this.dal = dal;
+    }
 
     @Override
     public PersoonModel createPersoon(PersoonDTO dto) {
@@ -25,3 +32,4 @@ public class PersoonService implements PersoonServiceInterface {
         return dal.findAll();
     }
 }
+

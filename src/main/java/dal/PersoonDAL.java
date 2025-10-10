@@ -1,22 +1,26 @@
-// dal/PersoonDAL.java
 package dal;
 
 import model.PersoonModel;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class PersoonDAL {
-    private final String URL = "jdbc:postgresql://localhost:5432/co2tracker";
-    private final String USER = "postgres";
-    private final String PASSWORD = "Appel12";
+
+    private final DataSource dataSource;
+
+    // Spring injecteert de datasource die via application.properties is geconfigureerd
+    public PersoonDAL(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public PersoonModel save(PersoonModel persoon) {
         String sql = "INSERT INTO persoon (naam, leeftijd) VALUES (?, ?) RETURNING id";
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, persoon.getNaam());
@@ -37,12 +41,16 @@ public class PersoonDAL {
         List<PersoonModel> personen = new ArrayList<>();
         String sql = "SELECT id, naam, leeftijd FROM persoon";
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                personen.add(new PersoonModel(rs.getInt("id"), rs.getString("naam"), rs.getInt("leeftijd")));
+                personen.add(new PersoonModel(
+                        rs.getInt("id"),
+                        rs.getString("naam"),
+                        rs.getInt("leeftijd")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
