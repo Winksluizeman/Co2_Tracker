@@ -19,12 +19,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter")
+        implementation("org.springframework.boot:spring-boot-starter-jdbc")
+        implementation("org.postgresql:postgresql:42.6.0")
+
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+    }
+
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
+}}
