@@ -35,5 +35,6 @@ public class PersoonService implements PersoonServiceInterface {
         List<PersoonModel> result = dal.getAllPersonen();
         System.out.println("PersoonService.getAllPersonen() returned count: " + result.size());
         return result;
+
     }
 }
