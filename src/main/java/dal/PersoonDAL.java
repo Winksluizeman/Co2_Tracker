@@ -22,12 +22,13 @@ public class PersoonDAL implements IPersoonDal {
     @Override
     public PersoonModel save(PersoonModel persoon) {
         System.out.println("PersoonDAL.save() called with: " + persoon);
-        String sql = "INSERT INTO persoon (naam, leeftijd) VALUES (?, ?) RETURNING id";
+        String sql = "INSERT INTO persoon (naam, leeftijd, wachtwoord) VALUES (?, ?, ?) RETURNING id";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, persoon.getNaam());
             stmt.setInt(2, persoon.getLeeftijd());
+            stmt.setString(3, persoon.getWachtwoord());
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -60,7 +61,7 @@ public class PersoonDAL implements IPersoonDal {
                         rs.getInt("id"),
                         rs.getString("naam"),
                         rs.getInt("leeftijd"),
-                        rs.getString("wachwoord")
+                        rs.getString("wachtwoord")
                 );
                 System.out.println("PersoonDAL.update() returning: " + updated);
                 return updated;
@@ -76,7 +77,7 @@ public class PersoonDAL implements IPersoonDal {
     public List<PersoonModel> getAllPersonen() {
         System.out.println("PersoonDAL.getAllPersonen() called");
         List<PersoonModel> personen = new ArrayList<>();
-        String sql = "SELECT id, naam, leeftijd FROM persoon";
+        String sql = "SELECT id, naam, leeftijd, wachtwoord FROM persoon";
 
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
