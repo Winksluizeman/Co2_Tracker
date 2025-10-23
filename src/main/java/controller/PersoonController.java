@@ -16,7 +16,11 @@ public class PersoonController {
 
     @PostMapping("/submit")
     public String handleForm(@RequestBody PersoonDTO dto) {
+        System.out.println("PersoonController.handleForm called");
+        System.out.println("Ontvangen DTO: " + dto);
+
         service.createPersoon(dto); // ⬅️ Opslaan via DAL
+
         return "Formulier opgeslagen voor: " + dto.getUsername();
     }
 }

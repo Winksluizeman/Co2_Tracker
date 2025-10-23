@@ -6,12 +6,18 @@ import model.PersoonModel;
 public class PersoonMapper {
 
     public static PersoonModel toModel(PersoonDTO dto) {
-        // ID wordt hier op 0 gezet, tenzij je die later via database of service toewijst
-        return new PersoonModel(0, dto.getUsername(), dto.getAge(), dto.getPassword());
+        System.out.println("[PersoonMapper] Mapping DTO to Model: " + dto);
+        // ID wordt op 0 gezet; database genereert later een echte ID
+        PersoonModel model = new PersoonModel(0, dto.getUsername(), dto.getAge(), dto.getPassword());
+        System.out.println("[PersoonMapper] Resulting Model: " + model);
+        return model;
     }
 
     public static PersoonDTO toDTO(PersoonModel model) {
-        return new PersoonDTO(model.getNaam(), model.getLeeftijd(), ""); // wachtwoord niet beschikbaar in model
+        System.out.println("[PersoonMapper] Mapping Model to DTO: " + model);
+        // Wachtwoord wordt niet meegegeven aan de DTO
+        PersoonDTO dto = new PersoonDTO(model.getNaam(), model.getLeeftijd(), "");
+        System.out.println("[PersoonMapper] Resulting DTO: " + dto);
+        return dto;
     }
 }
-

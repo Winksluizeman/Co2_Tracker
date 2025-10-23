@@ -5,12 +5,15 @@ public class PersoonDTO {
     private String password;
     private int age;
 
-    public PersoonDTO() {} // nodig voor JSON deserialisatie
+    public PersoonDTO() {
+        System.out.println("[PersoonDTO] Default constructor called (JSON deserialisatie)");
+    }
 
     public PersoonDTO(String username, int age, String password) {
         this.username = username;
         this.age = age;
         this.password = password;
+        System.out.println("[PersoonDTO] Constructor called with values: " + this);
     }
 
     public String getUsername() { return username; }

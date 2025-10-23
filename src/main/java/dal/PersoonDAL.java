@@ -16,13 +16,14 @@ public class PersoonDAL implements IPersoonDal {
 
     public PersoonDAL(DataSource dataSource) {
         this.dataSource = dataSource;
-        System.out.println("PersoonDAL instantiated");
+        System.out.println("[PersoonDAL] Instantiated with DataSource");
     }
 
     @Override
     public PersoonModel save(PersoonModel persoon) {
-        System.out.println("PersoonDAL.save() called with: " + persoon);
+        System.out.println("[PersoonDAL] save() called with: " + persoon);
         String sql = "INSERT INTO persoon (naam, leeftijd, wachtwoord) VALUES (?, ?, ?) RETURNING id";
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -34,20 +35,23 @@ public class PersoonDAL implements IPersoonDal {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 PersoonModel saved = new PersoonModel(id, persoon.getNaam(), persoon.getLeeftijd(), persoon.getWachtwoord());
-                System.out.println("PersoonDAL.save() returning: " + saved);
+                System.out.println("[PersoonDAL] save() success: " + saved);
                 return saved;
             }
         } catch (SQLException e) {
+            System.out.println("[PersoonDAL] save() failed: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("PersoonDAL.save() returning: null");
+
+        System.out.println("[PersoonDAL] save() returning: null");
         return null;
     }
 
     @Override
     public PersoonModel update(PersoonModel persoon) {
-        System.out.println("PersoonDAL.update() called with: " + persoon);
-        String sql = "UPDATE persoon SET naam = ?, leeftijd = ? WHERE id = ? RETURNING id, naam, leeftijd";
+        System.out.println("[PersoonDAL] update() called with: " + persoon);
+        String sql = "UPDATE persoon SET naam = ?, leeftijd = ? WHERE id = ? RETURNING id, naam, leeftijd, wachtwoord";
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -63,19 +67,21 @@ public class PersoonDAL implements IPersoonDal {
                         rs.getInt("leeftijd"),
                         rs.getString("wachtwoord")
                 );
-                System.out.println("PersoonDAL.update() returning: " + updated);
+                System.out.println("[PersoonDAL] update() success: " + updated);
                 return updated;
             }
         } catch (SQLException e) {
+            System.out.println("[PersoonDAL] update() failed: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("PersoonDAL.update() returning: null");
+
+        System.out.println("[PersoonDAL] update() returning: null");
         return null;
     }
 
     @Override
     public List<PersoonModel> getAllPersonen() {
-        System.out.println("PersoonDAL.getAllPersonen() called");
+        System.out.println("[PersoonDAL] getAllPersonen() called");
         List<PersoonModel> personen = new ArrayList<>();
         String sql = "SELECT id, naam, leeftijd, wachtwoord FROM persoon";
 
@@ -93,10 +99,11 @@ public class PersoonDAL implements IPersoonDal {
                 personen.add(p);
             }
         } catch (SQLException e) {
+            System.out.println("[PersoonDAL] getAllPersonen() failed: " + e.getMessage());
             e.printStackTrace();
         }
 
-        System.out.println("PersoonDAL.getAllPersonen() returning count: " + personen.size());
+        System.out.println("[PersoonDAL] getAllPersonen() returning count: " + personen.size());
         return personen;
     }
 }

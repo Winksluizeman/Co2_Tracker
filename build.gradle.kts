@@ -10,7 +10,7 @@ description = "Backend"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -19,16 +19,15 @@ repositories {
 }
 
 dependencies {
-    dependencies {
-        implementation("org.springframework.boot:spring-boot-starter")
-        implementation("org.springframework.boot:spring-boot-starter-web")
-        implementation("org.springframework.boot:spring-boot-starter-jdbc")
-        implementation("org.postgresql:postgresql:42.6.0")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.postgresql:postgresql:42.6.0")
+    implementation("org.springframework.security:spring-security-crypto")
 
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-    }
-
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}}
+}
