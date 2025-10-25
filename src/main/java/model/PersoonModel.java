@@ -24,17 +24,17 @@ public class PersoonModel {
     public String getEmail() { return email; }
 
     public void setUsername(String username) {
-        System.out.println("[PersoonModel] setNaam called with: " + username);
+        System.out.println("[PersoonModel] setUsername called with: " + username);
         this.username = username;
     }
 
     public void setAge(int age) {
-        System.out.println("[PersoonModel] setLeeftijd called with: " + age);
+        System.out.println("[PersoonModel] setAge called with: " + age);
         this.age = age;
     }
 
     public void setPassword(String password) {
-        System.out.println("[PersoonModel] setWachtwoord called with: " + password);
+        System.out.println("[PersoonModel] setPassword called with: " + password);
         this.password = password;
     }
 
@@ -45,7 +45,6 @@ public class PersoonModel {
 
     @Override
     public String toString() {
-        return "PersoonDTO{username='" + username + "', email='" + email + "', age=" + age + ", password='" + password + "'}";
-
+        return "PersoonModel{username='" + username + "', email='" + email + "', age=" + age + ", password='" + password + "'}";
     }
 }
