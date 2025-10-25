@@ -22,19 +22,20 @@ public class PersoonDAL implements IPersoonDal {
     @Override
     public PersoonModel save(PersoonModel persoon) {
         System.out.println("[PersoonDAL] save() called with: " + persoon);
-        String sql = "INSERT INTO persoon (naam, leeftijd, wachtwoord) VALUES (?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO persoon (username, age, password, email) VALUES (?, ?, ?, ?) RETURNING id";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, persoon.getNaam());
-            stmt.setInt(2, persoon.getLeeftijd());
-            stmt.setString(3, persoon.getWachtwoord());
+            stmt.setString(1, persoon.getUsername());
+            stmt.setInt(2, persoon.getAge());
+            stmt.setString(3, persoon.getPassword());
+            stmt.setString(4, persoon.getEmail());
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt(1);
-                PersoonModel saved = new PersoonModel(id, persoon.getNaam(), persoon.getLeeftijd(), persoon.getWachtwoord());
+                PersoonModel saved = new PersoonModel(id, persoon.getUsername(), persoon.getAge(), persoon.getPassword(), persoon.getEmail());
                 System.out.println("[PersoonDAL] save() success: " + saved);
                 return saved;
             }
@@ -50,22 +51,24 @@ public class PersoonDAL implements IPersoonDal {
     @Override
     public PersoonModel update(PersoonModel persoon) {
         System.out.println("[PersoonDAL] update() called with: " + persoon);
-        String sql = "UPDATE persoon SET naam = ?, leeftijd = ? WHERE id = ? RETURNING id, naam, leeftijd, wachtwoord";
+        String sql = "UPDATE persoon SET username = ?, age = ?, email = ? WHERE id = ? RETURNING id, username, age, password, email";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, persoon.getNaam());
-            stmt.setInt(2, persoon.getLeeftijd());
-            stmt.setInt(3, persoon.getId());
+            stmt.setString(1, persoon.getUsername());
+            stmt.setInt(2, persoon.getAge());
+            stmt.setString(3, persoon.getEmail());
+            stmt.setInt(4, persoon.getId());
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 PersoonModel updated = new PersoonModel(
                         rs.getInt("id"),
-                        rs.getString("naam"),
-                        rs.getInt("leeftijd"),
-                        rs.getString("wachtwoord")
+                        rs.getString("username"),
+                        rs.getInt("age"),
+                        rs.getString("password"),
+                        rs.getString("email")
                 );
                 System.out.println("[PersoonDAL] update() success: " + updated);
                 return updated;
@@ -83,7 +86,7 @@ public class PersoonDAL implements IPersoonDal {
     public List<PersoonModel> getAllPersonen() {
         System.out.println("[PersoonDAL] getAllPersonen() called");
         List<PersoonModel> personen = new ArrayList<>();
-        String sql = "SELECT id, naam, leeftijd, wachtwoord FROM persoon";
+        String sql = "SELECT id, username, age, password, email FROM persoon";
 
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
@@ -92,9 +95,10 @@ public class PersoonDAL implements IPersoonDal {
             while (rs.next()) {
                 PersoonModel p = new PersoonModel(
                         rs.getInt("id"),
-                        rs.getString("naam"),
-                        rs.getInt("leeftijd"),
-                        rs.getString("wachtwoord")
+                        rs.getString("username"),
+                        rs.getInt("age"),
+                        rs.getString("password"),
+                        rs.getString("email")
                 );
                 personen.add(p);
             }

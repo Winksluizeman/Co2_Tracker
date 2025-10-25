@@ -31,7 +31,6 @@ public class PersoonService implements PersoonServiceInterface {
             throw new IllegalArgumentException("Wachtwoord mag niet leeg zijn");
         }
 
-        // ✅ Hash het wachtwoord met BCrypt via Spring Security
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
         System.out.println("[PersoonService] Wachtwoord gehashed (BCrypt).");
 
@@ -40,7 +39,8 @@ public class PersoonService implements PersoonServiceInterface {
                 0,
                 dto.getUsername(),
                 dto.getAge(),
-                hashedPassword
+                hashedPassword,
+                dto.getEmail()
         );
 
         // Sla op via DAL

@@ -2,41 +2,50 @@ package model;
 
 public class PersoonModel {
     private int id;
-    private String naam;
-    private int leeftijd;
-    private String wachtwoord;
+    private String username;
+    private int age;
+    private String password;
+    private String email;
 
-    public PersoonModel(int id, String naam, int leeftijd, String wachtwoord) {
+    public PersoonModel(int id, String username, int age, String password, String email) {
         System.out.println("[PersoonModel] Constructor called");
         this.id = id;
-        this.naam = naam;
-        this.leeftijd = leeftijd;
-        this.wachtwoord = wachtwoord;
+        this.username = username;
+        this.age = age;
+        this.password = password;
+        this.email = email;
         System.out.println("[PersoonModel] Created: " + this);
     }
 
     public int getId() { return id; }
-    public String getNaam() { return naam; }
-    public int getLeeftijd() { return leeftijd; }
-    public String getWachtwoord() { return wachtwoord; }
+    public String getUsername() { return username; }
+    public int getAge() { return age; }
+    public String getPassword() { return password; }
+    public String getEmail() { return email; }
 
-    public void setNaam(String naam) {
-        System.out.println("[PersoonModel] setNaam called with: " + naam);
-        this.naam = naam;
+    public void setUsername(String username) {
+        System.out.println("[PersoonModel] setNaam called with: " + username);
+        this.username = username;
     }
 
-    public void setLeeftijd(int leeftijd) {
-        System.out.println("[PersoonModel] setLeeftijd called with: " + leeftijd);
-        this.leeftijd = leeftijd;
+    public void setAge(int age) {
+        System.out.println("[PersoonModel] setLeeftijd called with: " + age);
+        this.age = age;
     }
 
-    public void setWachtwoord(String wachtwoord) {
-        System.out.println("[PersoonModel] setWachtwoord called with: " + wachtwoord);
-        this.wachtwoord = wachtwoord;
+    public void setPassword(String password) {
+        System.out.println("[PersoonModel] setWachtwoord called with: " + password);
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        System.out.println("[PersoonModel] setEmail called with: " + email);
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return "PersoonModel{id=" + id + ", naam='" + naam + "', leeftijd=" + leeftijd + ", wachtwoord='" + wachtwoord + "'}";
+        return "PersoonDTO{username='" + username + "', email='" + email + "', age=" + age + ", password='" + password + "'}";
+
     }
 }
