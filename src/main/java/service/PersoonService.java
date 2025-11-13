@@ -54,7 +54,7 @@ public class PersoonService implements PersoonServiceInterface {
     public List<PersoonModel> getAllPersonen() {
         System.out.println("[PersoonService] getAllPersonen() called");
         List<PersoonModel> personen = dal.getAllPersonen();
-        System.out.println("[PersoonService] DAL returned " + personen.size() + " personen");
+        System.out.println("[PersoonService] HALLLLLLO DAL returned " + personen.size() + " personen");
         return personen;
     }
 }
