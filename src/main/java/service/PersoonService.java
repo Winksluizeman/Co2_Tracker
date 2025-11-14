@@ -31,6 +31,18 @@ public class PersoonService implements PersoonServiceInterface {
             throw new IllegalArgumentException("Wachtwoord mag niet leeg zijn");
         }
 
+        if (dto.getUsername() == null || dto.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Gebruikersnaam mag niet leeg zijn");
+        }
+
+        if (dto.getAge() <= 0) {
+            throw new IllegalArgumentException("Leeftijd mag niet leeg zijn");
+        }
+
+        if (dto.getEmail() == null || dto.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email mag niet leeg zijn");
+        }
+
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
         System.out.println("[PersoonService] Wachtwoord gehashed (BCrypt).");
 

@@ -22,6 +22,20 @@ public class PersoonDAL implements IPersoonDal {
     @Override
     public PersoonModel save(PersoonModel persoon) {
         System.out.println("[PersoonDAL] save() called with: " + persoon);
+
+        if (persoon.getUsername() == null || persoon.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Username mag niet leeg zijn");
+        }
+        if (persoon.getAge() <= 0) {
+            throw new IllegalArgumentException("Leeftijd moet groter dan 0 zijn");
+        }
+        if (persoon.getPassword() == null || persoon.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password mag niet leeg zijn");
+        }
+        if (persoon.getEmail() == null || persoon.getEmail().isBlank() || !persoon.getEmail().contains("@")) {
+            throw new IllegalArgumentException("Email is ongeldig");
+        }
+
         String sql = "INSERT INTO persoon (username, age, password, email) VALUES (?, ?, ?, ?) RETURNING id";
 
         try (Connection conn = dataSource.getConnection();
@@ -51,6 +65,20 @@ public class PersoonDAL implements IPersoonDal {
     @Override
     public PersoonModel update(PersoonModel persoon) {
         System.out.println("[PersoonDAL] update() called with: " + persoon);
+
+        if (persoon.getId() <= 0) {
+            throw new IllegalArgumentException("Id moet groter dan 0 zijn");
+        }
+        if (persoon.getUsername() == null || persoon.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Username mag niet leeg zijn");
+        }
+        if (persoon.getAge() <= 0) {
+            throw new IllegalArgumentException("Leeftijd moet groter dan 0 zijn");
+        }
+        if (persoon.getEmail() == null || persoon.getEmail().isBlank() || !persoon.getEmail().contains("@")) {
+            throw new IllegalArgumentException("Email is ongeldig");
+        }
+
         String sql = "UPDATE persoon SET username = ?, age = ?, email = ? WHERE id = ? RETURNING id, username, age, password, email";
 
         try (Connection conn = dataSource.getConnection();
@@ -111,3 +139,4 @@ public class PersoonDAL implements IPersoonDal {
         return personen;
     }
 }
+
