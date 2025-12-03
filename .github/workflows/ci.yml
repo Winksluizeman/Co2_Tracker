@@ -7,23 +7,23 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Java 21.0.8
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '21.0.8'
+          distribution: 'temurin'
 
-      - name: Grant execute permission to Gradle
+      - name: Grant execute permission for Gradlew
         run: chmod +x gradlew
 
-      - name: Build & Test with Gradle
+      - name: Build and run tests
         run: ./gradlew clean build --no-daemon
         env:
           SPRING_PROFILES_ACTIVE: test
