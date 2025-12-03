@@ -25,3 +25,5 @@ jobs:
 
       - name: Build & Test with Gradle
         run: ./gradlew clean build --no-daemon
+        env:
+          SPRING_PROFILES_ACTIVE: test
