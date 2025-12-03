@@ -36,6 +36,7 @@ public class PersoonController {
     }
 
     // GET endpoint om alle personen op te halen
+    //
     @GetMapping("/persoon")
     public List<PersoonModel> getAllPersonen() {
         return service.getAllPersonen();
