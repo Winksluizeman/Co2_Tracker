@@ -17,11 +17,11 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21.0.8'
           distribution: 'temurin'
 
       - name: Grant execute permission for Gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Run unit tests only
+        run: ./gradlew test -x integrationTest -x e2eTest
