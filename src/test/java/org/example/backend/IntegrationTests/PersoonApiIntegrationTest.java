@@ -1,48 +1,45 @@
 package org.example.backend.IntegrationTests;
 
-import dal.PersoonDAL;
+import dto.PersoonDTO;
 import model.PersoonModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")   // Gebruik H2 test-config
 @Transactional
-class PersoonDalIntegrationTests {
-
-    @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16")
-            .withDatabaseName("co2tracker")
-            .withUsername("postgres")
-            .withPassword("Appel12");
-
-    @DynamicPropertySource
-    static void configure(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
+class PersoonApiIntegrationTest {
 
     @Autowired
-    private PersoonDAL dal;
+    private TestRestTemplate restTemplate;
 
     @Test
-    void testSavePersoon_persistsToDatabase() {
-        PersoonModel persoon = new PersoonModel(0, "john_doe", 30, "Banaan12", "john@example.com");
-        PersoonModel saved = dal.save(persoon);
+    void testCreatePersoon_andRetrieveFromDatabase() {
+        PersoonDTO dto = new PersoonDTO("john_doe", 30, "Banaan12", "john@example.com");
 
+        ResponseEntity<PersoonModel> response =
+                restTemplate.postForEntity("/api/persoon", dto, PersoonModel.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        PersoonModel saved = response.getBody();
         assertNotNull(saved);
         assertTrue(saved.getId() > 0);
+
+        ResponseEntity<List> allResponse =
+                restTemplate.getForEntity("/api/persoon", List.class);
+
+        assertEquals(HttpStatus.OK, allResponse.getStatusCode());
+        assertNotNull(allResponse.getBody());
+        assertTrue(allResponse.getBody().toString().contains("john_doe"));
     }
 }
