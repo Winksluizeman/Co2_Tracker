@@ -10,6 +10,21 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:                # Start een PostgreSQL container tijdens de CI-run
+        image: postgres:16     # Gebruik versie 16 van PostgreSQL
+        env:
+          POSTGRES_DB: co2tracker
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: Appel12
+        ports:
+          - 5432:5432          # Expose poort zodat je app kan verbinden
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5   # Wacht tot de DB echt klaar is
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,4 +41,7 @@ jobs:
       - name: Build and run tests
         run: ./gradlew clean build --no-daemon
         env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/co2tracker
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: Appel12
           SPRING_PROFILES_ACTIVE: test
