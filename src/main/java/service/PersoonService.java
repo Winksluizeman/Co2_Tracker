@@ -1,72 +1,64 @@
 package service;
 
-import interfacesdal.IPersoonDal;
+import dal.PersoonDAL;
 import dto.PersoonDTO;
+import mapper.PersoonMapper;
 import model.PersoonModel;
-import serviceInterfaces.PersoonServiceInterface;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PersoonService implements PersoonServiceInterface {
+public class PersoonService {
 
-    private final IPersoonDal dal;
+    private final PersoonDAL persoonDAL;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public PersoonService(IPersoonDal dal, PasswordEncoder passwordEncoder) {
-        System.out.println("[PersoonService] Constructor called, DAL and Encoder injected");
-        this.dal = dal;
+    public PersoonService(PersoonDAL persoonDAL, PasswordEncoder passwordEncoder) {
+        this.persoonDAL = persoonDAL;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
     public PersoonModel createPersoon(PersoonDTO dto) {
-        System.out.println("[PersoonService] createPersoon() called with DTO: " + dto);
-
-        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
-            throw new IllegalArgumentException("Wachtwoord mag niet leeg zijn");
-        }
-
-        if (dto.getUsername() == null || dto.getUsername().isBlank()) {
-            throw new IllegalArgumentException("Gebruikersnaam mag niet leeg zijn");
-        }
-
-        if (dto.getAge() <= 0) {
-            throw new IllegalArgumentException("Leeftijd mag niet leeg zijn");
-        }
-
-        if (dto.getEmail() == null || dto.getEmail().isBlank()) {
-            throw new IllegalArgumentException("Email mag niet leeg zijn");
-        }
-
+        validate(dto);
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        System.out.println("[PersoonService] Wachtwoord gehashed (BCrypt).");
-
-        // Maak het model aan met gehashte wachtwoord
-        PersoonModel persoon = new PersoonModel(
-                0,
-                dto.getUsername(),
-                dto.getAge(),
-                hashedPassword,
-                dto.getEmail()
-        );
-
-        // Sla op via DAL
-        PersoonModel savedPersoon = dal.save(persoon);
-        System.out.println("[PersoonService] DAL returned: " + savedPersoon);
-
-        return savedPersoon;
+        PersoonModel model = PersoonMapper.toModel(dto, hashedPassword);
+        return persoonDAL.save(model);
     }
 
-    @Override
+    public PersoonModel updatePersoon(PersoonModel persoon) {
+        if (persoon.getId() <= 0) {
+            throw new IllegalArgumentException("Id moet groter dan 0 zijn");
+        }
+        return persoonDAL.save(persoon);
+    }
+
     public List<PersoonModel> getAllPersonen() {
-        System.out.println("[PersoonService] getAllPersonen() called");
-        List<PersoonModel> personen = dal.getAllPersonen();
-        System.out.println("[PersoonService] HALLLLLLO DAL returned " + personen.size() + " personen");
-        return personen;
+        return persoonDAL.findAll();
+    }
+
+    public Optional<PersoonModel> getById(int id) {
+        return persoonDAL.findById(id);
+    }
+
+    public void deleteById(int id) {
+        persoonDAL.deleteById(id);
+    }
+
+    private void validate(PersoonDTO dto) {
+        if (dto.getUsername() == null || dto.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Username mag niet leeg zijn");
+        }
+        if (dto.getAge() <= 0) {
+            throw new IllegalArgumentException("Leeftijd moet groter dan 0 zijn");
+        }
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password mag niet leeg zijn");
+        }
+        if (dto.getEmail() == null || dto.getEmail().isBlank() || !dto.getEmail().contains("@")) {
+            throw new IllegalArgumentException("Email is ongeldig");
+        }
     }
 }

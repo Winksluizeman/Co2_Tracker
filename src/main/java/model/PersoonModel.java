@@ -1,50 +1,45 @@
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "persoon")
 public class PersoonModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private int age;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String email;
 
+    public PersoonModel() {}
+
     public PersoonModel(int id, String username, int age, String password, String email) {
-        System.out.println("[PersoonModel] Constructor called");
         this.id = id;
         this.username = username;
         this.age = age;
         this.password = password;
         this.email = email;
-        System.out.println("[PersoonModel] Created: " + this);
     }
 
     public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
     public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
     public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
     public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
     public String getEmail() { return email; }
-
-    public void setUsername(String username) {
-        System.out.println("[PersoonModel] setUsername called with: " + username);
-        this.username = username;
-    }
-
-    public void setAge(int age) {
-        System.out.println("[PersoonModel] setAge called with: " + age);
-        this.age = age;
-    }
-
-    public void setPassword(String password) {
-        System.out.println("[PersoonModel] setPassword called with: " + password);
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        System.out.println("[PersoonModel] setEmail called with: " + email);
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "PersoonModel{username='" + username + "', email='" + email + "', age=" + age + ", password='" + password + "'}";
-    }
+    public void setEmail(String email) { this.email = email; }
 }
