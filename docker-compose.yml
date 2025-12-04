@@ -1,12 +1,40 @@
-version: '3.8'
-
 services:
-  co2-tracker:
+  db:
+    image: postgres:16
+    container_name: co2-db
+    environment:
+      POSTGRES_DB: co2tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Appel12
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: co2-backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/co2tracker
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Appel12
+      SPRING_PROFILES_ACTIVE: docker
     ports:
       - "8080:8080"
-    volumes:
-      - .:/app
-    command: ./gradlew bootRun
+
+  frontend:
+    build:
+      context: ../co2Frontend
+      dockerfile: Dockerfile
+    container_name: co2-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  db-data:
