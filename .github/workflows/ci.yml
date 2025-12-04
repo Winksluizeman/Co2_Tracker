@@ -11,19 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:                # Start een PostgreSQL container tijdens de CI-run
-        image: postgres:16     # Gebruik versie 16 van PostgreSQL
+      postgres:
+        image: postgres:16
         env:
           POSTGRES_DB: co2tracker
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: Appel12
         ports:
-          - 5432:5432          # Expose poort zodat je app kan verbinden
+          - 5432:5432
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5   # Wacht tot de DB echt klaar is
+          --health-retries=5 
 
     steps:
       - name: Checkout code
