@@ -21,13 +21,11 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-0 libx11-xcb1 fonts-liberation libasound2 curl gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome (moderne signed-by methode)
-RUN wget -q -O /usr/share/keyrings/google-linux-signing-key.gpg https://dl.google.com/linux/linux_signing_key.pub \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-key.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
-       > /etc/apt/sources.list.d/google-chrome.list \
+# Install Google Chrome (moderne signed-by methode, geen apt-key)
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y ./google-chrome-stable_current_amd64.deb \
+    && rm google-chrome-stable_current_amd64.deb
 
 # Install ChromeDriver (matcht Chrome versie)
 RUN LATEST=$(curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
