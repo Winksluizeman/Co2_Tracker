@@ -1,4 +1,4 @@
-package dto;
+package org.example.backend.Api.dto;
 
 public class PersoonDTO {
     private String username;

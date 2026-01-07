@@ -1,8 +1,8 @@
-package controller;
+package org.example.backend.Api.controller;
 
-import dto.PersoonDTO;
-import model.PersoonModel;
-import service.PersoonService;
+import org.example.backend.Api.dto.PersoonDTO;
+import org.example.backend.Domain.PersoonModel;
+import org.example.backend.Application.service.PersoonService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

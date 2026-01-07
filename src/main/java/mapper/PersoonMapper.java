@@ -1,7 +1,7 @@
 package mapper;
 
-import dto.PersoonDTO;
-import model.PersoonModel;
+import org.example.backend.Api.dto.PersoonDTO;
+import org.example.backend.Domain.PersoonModel;
 
 public class PersoonMapper {
 

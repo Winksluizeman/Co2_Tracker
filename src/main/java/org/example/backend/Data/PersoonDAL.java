@@ -1,6 +1,6 @@
-package dal;
+package org.example.backend.Data;
 
-import model.PersoonModel;
+import org.example.backend.Domain.PersoonModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

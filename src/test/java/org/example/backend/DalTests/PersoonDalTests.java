@@ -1,7 +1,7 @@
 package org.example.backend.DalTests;
 
-import dal.PersoonDAL;
-import model.PersoonModel;
+import org.example.backend.Data.PersoonDAL;
+import org.example.backend.Domain.PersoonModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")   // Gebruik H2 test-config
+@ActiveProfiles("test")
 @Transactional
 class PersoonDalIntegrationTests {
 

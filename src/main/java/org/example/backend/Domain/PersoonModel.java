@@ -1,4 +1,4 @@
-package model;
+package org.example.backend.Domain;
 
 import jakarta.persistence.*;
 

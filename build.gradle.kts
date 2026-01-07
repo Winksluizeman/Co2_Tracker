@@ -23,6 +23,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-crypto")
 
     implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito:mockito-core:5.12.0")
@@ -30,6 +31,9 @@ dependencies {
 
     testImplementation("org.testcontainers:junit-jupiter:1.20.1")
     testImplementation("org.testcontainers:postgresql:1.20.1")
+
+
+    implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 }

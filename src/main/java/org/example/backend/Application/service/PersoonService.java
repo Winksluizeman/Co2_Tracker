@@ -1,9 +1,9 @@
-package service;
+package org.example.backend.Application.service;
 
-import dal.PersoonDAL;
-import dto.PersoonDTO;
+import org.example.backend.Data.PersoonDAL;
+import org.example.backend.Api.dto.PersoonDTO;
 import mapper.PersoonMapper;
-import model.PersoonModel;
+import org.example.backend.Domain.PersoonModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
