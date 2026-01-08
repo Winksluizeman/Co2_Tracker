@@ -1,9 +1,6 @@
 package org.example.backend.Unittests;
 
-import org.example.backend.Data.PersoonDAL;
-import org.example.backend.Api.dto.PersoonDTO;
 import org.example.backend.Domain.PersoonModel;
-import org.example.backend.Application.service.PersoonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

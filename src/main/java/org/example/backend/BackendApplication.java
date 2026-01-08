@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {
         "org.example.backend",
-        "dal",
+        "api",
         "model",
         "service",
         "dto",

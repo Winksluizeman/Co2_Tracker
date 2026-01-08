@@ -1,10 +1,7 @@
 package org.example.backend.ApiTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.backend.Api.controller.PersoonController;
-import org.example.backend.Api.dto.PersoonDTO;
 import org.example.backend.Domain.PersoonModel;
-import org.example.backend.Application.service.PersoonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

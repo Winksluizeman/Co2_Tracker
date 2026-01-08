@@ -1,6 +1,5 @@
 package org.example.backend.DalTests;
 
-import org.example.backend.Data.PersoonDAL;
 import org.example.backend.Domain.PersoonModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

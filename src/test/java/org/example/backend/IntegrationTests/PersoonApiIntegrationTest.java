@@ -1,6 +1,5 @@
 package org.example.backend.IntegrationTests;
 
-import org.example.backend.Api.dto.PersoonDTO;
 import org.example.backend.Domain.PersoonModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
