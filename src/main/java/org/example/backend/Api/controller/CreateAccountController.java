@@ -4,44 +4,33 @@ import org.example.backend.Api.converter.CreateAccountConverter;
 import org.example.backend.Api.dto.CreateAccountDto;
 import org.example.backend.Application.service.CreateAccountService;
 import org.example.backend.Domain.CreateAccountModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/accounts")
 public class CreateAccountController {
 
-    private final CreateAccountService  createAccountService;
+    private final CreateAccountService createAccountService;
+    private final CreateAccountConverter converter;
 
-    public CreateAccountController(CreateAccountService createAccountService) {
-        this.createAccountService = createAccountService; }
+    public CreateAccountController(CreateAccountService createAccountService, CreateAccountConverter converter) {
+        this.createAccountService = createAccountService;
+        this.converter = converter;
+    }
 
+    @PostMapping
+    public ResponseEntity<CreateAccountDto> create(@RequestBody CreateAccountDto dto) {
 
-    //Create (C --- Crud)
-    @PostMapping()
-    public ResponseEntity<CreateAccountDto> createAccount(
-            @Validated @RequestBody CreateAccountDto createAccountDTO)
-    {
-        createAccountService.createAccount(createAccountDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        // Convert DTO → Domain
+        CreateAccountModel model = CreateAccountConverter.toDomain(dto);
 
-    };
+        // Call service
+        CreateAccountModel saved = createAccountService.createAccount(model);
 
+        // Convert Domain → DTO
+        CreateAccountDto response = CreateAccountConverter.toDto(saved);
 
-
-
-
-    //Read (R --- Crud)
-
-
-    //Update (U --- Crud)
-
-
-    //Delete (D --- Crud)
-
+        return ResponseEntity.ok(response);
+    }
 }

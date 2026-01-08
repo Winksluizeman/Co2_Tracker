@@ -1,56 +1,42 @@
 package org.example.backend.Application.service;
 
-import jakarta.transaction.Transactional;
-import org.example.backend.Api.converter.CreateAccountConverter;
-import org.example.backend.Api.dto.CreateAccountDto;
 import org.example.backend.Application.Port.ICreateAccountRepo;
 import org.example.backend.Domain.CreateAccountModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class CreateAccountService {
 
     private final PasswordEncoder passwordEncoder;
-    private final ICreateAccountRepo iCreateAccountRepo;
+    private final ICreateAccountRepo createAccountRepo;
 
-    public CreateAccountService(PasswordEncoder passwordEncoder, ICreateAccountRepo iCreateAccountRepo){
+    public CreateAccountService(PasswordEncoder passwordEncoder, ICreateAccountRepo createAccountRepo) {
         this.passwordEncoder = passwordEncoder;
-        this.iCreateAccountRepo = iCreateAccountRepo;
+        this.createAccountRepo = createAccountRepo;
     }
 
-    @Transactional
-    public CreateAccountModel createAccount(CreateAccountDto createAccountDto)
-    {
-        CreateAccountModel createAccountModel = CreateAccountConverter.toDomain(createAccountDto);
+    public CreateAccountModel createAccount(CreateAccountModel model) {
+        validate(model);
 
-        validate(createAccountModel);
+        String encodedPassword = passwordEncoder.encode(model.getPassword());
+        model.setPassword(encodedPassword);
 
-        createAccountModel.setPassword(
-                passwordEncoder.encode(createAccountModel.getPassword())
-        );
-
-        return iCreateAccountRepo.createAccount(createAccountModel);
-
-    };
-
-    private void validate(CreateAccountModel createAccountModel) {
-        if (createAccountModel.getUsername() == null || createAccountModel.getUsername().isBlank()) {
-            throw new IllegalArgumentException("Username can't be empty");
-        }
-        if (createAccountModel.getAge() <= 0) {
-            throw new IllegalArgumentException("Age has to be higher than zero");
-        }
-        if (createAccountModel.getPassword() == null || createAccountModel.getPassword().isBlank()) {
-            throw new IllegalArgumentException("Password can't be empty");
-        }
-        if (createAccountModel.getEmail() == null || createAccountModel.getEmail().isBlank() || !createAccountModel.getEmail().contains("@")) {
-            throw new IllegalArgumentException("Email needs to contain a '@' ");
-        }
-
+        return createAccountRepo.createAccount(model);
     }
 
+    private void validate(CreateAccountModel model) {
+        if (model.getUsername() == null || model.getUsername().isBlank()) {
+            throw new IllegalArgumentException("Username cannot be empty");
+        }
+        if (model.getAge() <= 0) {
+            throw new IllegalArgumentException("Age must be greater than 0");
+        }
+        if (model.getEmail() == null || !model.getEmail().contains("@")) {
+            throw new IllegalArgumentException("Invalid email");
+        }
+        if (model.getPassword() == null || model.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+    }
 }
-
-

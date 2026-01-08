@@ -2,8 +2,9 @@ package org.example.backend.Api.converter;
 
 import org.example.backend.Api.dto.CreateAccountDto;
 import org.example.backend.Domain.CreateAccountModel;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class CreateAccountConverter {
 
     //Dto -> Domain (model)

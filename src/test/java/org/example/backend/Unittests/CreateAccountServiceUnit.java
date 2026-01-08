@@ -2,7 +2,6 @@ package org.example.backend.Unittests;
 
 import org.example.backend.Application.Port.ICreateAccountRepo;
 import org.example.backend.Application.service.CreateAccountService;
-import org.example.backend.Api.dto.CreateAccountDto;
 import org.example.backend.Domain.CreateAccountModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-class CreateAccountServiceTest {
+class CreateAccountServiceUnit {
 
     private CreateAccountService subject;
 
@@ -36,11 +35,12 @@ class CreateAccountServiceTest {
     @Test
     void shouldCreateAccountWhenInputIsValid() {
         // Arrange
-        CreateAccountDto dto = new CreateAccountDto();
-        dto.setUsername("Jeroen");
-        dto.setAge(21);
-        dto.setPassword("Password123");
-        dto.setEmail("Test@gmail.com");
+        CreateAccountModel model = new CreateAccountModel(
+                "Jeroen",
+                21,
+                "Test@gmail.com",
+                "Password123"
+        );
 
         when(passwordEncoder.encode("Password123"))
                 .thenReturn("ENCODED_PASSWORD");
@@ -56,7 +56,7 @@ class CreateAccountServiceTest {
                 .thenReturn(savedModel);
 
         // Act
-        CreateAccountModel result = subject.createAccount(dto);
+        CreateAccountModel result = subject.createAccount(model);
 
         // Assert
         assertThat(result.getUsername(), is("Jeroen"));
@@ -70,45 +70,49 @@ class CreateAccountServiceTest {
 
     @Test
     void shouldThrowWhenUsernameIsEmpty() {
-        CreateAccountDto dto = new CreateAccountDto();
-        dto.setUsername("");
-        dto.setAge(21);
-        dto.setPassword("Password123");
-        dto.setEmail("Test@gmail.com");
+        CreateAccountModel model = new CreateAccountModel(
+                "",
+                21,
+                "Test@gmail.com",
+                "Password123"
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(dto));
+        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(model));
     }
 
     @Test
     void shouldThrowWhenAgeIsInvalid() {
-        CreateAccountDto dto = new CreateAccountDto();
-        dto.setUsername("Wink");
-        dto.setAge(0);
-        dto.setPassword("password123");
-        dto.setEmail("wink@example.com");
+        CreateAccountModel model = new CreateAccountModel(
+                "Wink",
+                0,
+                "wink@example.com",
+                "password123"
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(dto));
+        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(model));
     }
 
     @Test
     void shouldThrowWhenPasswordIsEmpty() {
-        CreateAccountDto dto = new CreateAccountDto();
-        dto.setUsername("Wink");
-        dto.setAge(21);
-        dto.setPassword("");
-        dto.setEmail("wink@example.com");
+        CreateAccountModel model = new CreateAccountModel(
+                "Wink",
+                21,
+                "wink@example.com",
+                ""
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(dto));
+        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(model));
     }
 
     @Test
     void shouldThrowWhenEmailIsInvalid() {
-        CreateAccountDto dto = new CreateAccountDto();
-        dto.setUsername("Wink");
-        dto.setAge(21);
-        dto.setPassword("password123");
-        dto.setEmail("invalidEmail");
+        CreateAccountModel model = new CreateAccountModel(
+                "Wink",
+                21,
+                "invalidEmail",
+                "password123"
+        );
 
-        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(dto));
+        assertThrows(IllegalArgumentException.class, () -> subject.createAccount(model));
     }
 }
