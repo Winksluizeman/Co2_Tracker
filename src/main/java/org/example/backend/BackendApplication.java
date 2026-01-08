@@ -7,13 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {
         "org.example.backend",
-        "api",
-        "model",
-        "service",
-        "dto",
-        "controller"
 })
-@EnableJpaRepositories(basePackages = "dal")
+@EnableJpaRepositories(basePackages = "org.example.backend")
 @EntityScan(basePackages = "model")
 public class BackendApplication {
     public static void main(String[] args) {

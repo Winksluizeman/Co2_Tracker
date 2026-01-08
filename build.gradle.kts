@@ -36,6 +36,14 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+
+    //Automatische setters en getters via Lombok
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks.test {
