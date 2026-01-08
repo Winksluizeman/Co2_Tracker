@@ -10,31 +10,18 @@ import org.example.backend.Data.table.AccountTable;
 import org.example.backend.Domain.CreateAccountModel;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
+@Transactional
 public class CreateAccountRepo implements ICreateAccountRepo {
 
     @PersistenceContext
-    final EntityManager em;
-
-    public CreateAccountRepo(EntityManager em)
-    {
-        this.em = em;
-    }
+    private EntityManager em;
 
     @Override
-    @Transactional
-    public CreateAccountModel createAccount(CreateAccountModel createAccountModel)
-    {
-        final AccountTable accountTable = CreateAccountConverter.toTable(createAccountModel);
-        //VOOR NU SYSTEM.OUT.PRINTLN MAAR HIERNA LOGGING
-        System.out.println(accountTable.getId());
-        System.out.println(accountTable.getUsername());
-        System.out.println(accountTable.getPassword());
-        System.out.println(accountTable.getAge());
-        System.out.println(accountTable.getEmail());
-
+    public CreateAccountModel createAccount(CreateAccountModel createAccountModel) {
+        AccountTable accountTable = CreateAccountConverter.toTable(createAccountModel);
         em.persist(accountTable);
         return createAccountModel;
-    };
-
+    }
 }

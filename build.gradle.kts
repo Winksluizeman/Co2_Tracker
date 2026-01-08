@@ -38,6 +38,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 
+
     //Automatische setters en getters via Lombok
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
