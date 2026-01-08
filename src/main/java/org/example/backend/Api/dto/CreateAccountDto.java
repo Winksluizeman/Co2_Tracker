@@ -11,5 +11,4 @@ public class CreateAccountDto {
     private int age;
     private String password;
     private String email;
-
 }
