@@ -1,9 +1,9 @@
-package org.example.backend.Api.controller;
+package org.example.backend.api.controller;
 
-import org.example.backend.Api.converter.CreateAccountConverter;
-import org.example.backend.Api.dto.CreateAccountDto;
-import org.example.backend.Application.service.CreateAccountService;
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.api.converter.CreateAccountConverter;
+import org.example.backend.api.dto.CreateAccountDto;
+import org.example.backend.application.service.CreateAccountService;
+import org.example.backend.domain.CreateAccountModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

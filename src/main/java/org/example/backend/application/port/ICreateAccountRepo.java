@@ -1,6 +1,7 @@
-package org.example.backend.Application.Port;
+package org.example.backend.application.port;
 
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.domain.CreateAccountModel;
+
 
 public interface ICreateAccountRepo {
 

@@ -1,8 +1,8 @@
 package org.example.backend.Unittests;
 
-import org.example.backend.Application.Port.ICreateAccountRepo;
-import org.example.backend.Application.service.CreateAccountService;
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.application.port.ICreateAccountRepo;
+import org.example.backend.application.service.CreateAccountService;
+import org.example.backend.domain.CreateAccountModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

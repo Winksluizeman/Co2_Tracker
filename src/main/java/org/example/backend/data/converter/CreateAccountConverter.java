@@ -1,7 +1,7 @@
-package org.example.backend.Data.converter;
+package org.example.backend.data.converter;
 
-import org.example.backend.Data.table.AccountTable;
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.data.table.AccountTable;
+import org.example.backend.domain.CreateAccountModel;
 
 public class CreateAccountConverter {
 
@@ -15,5 +15,5 @@ public class CreateAccountConverter {
         account.setPassword(createAccountModel.getPassword());
 
         return account;
-    };
+    }
 }

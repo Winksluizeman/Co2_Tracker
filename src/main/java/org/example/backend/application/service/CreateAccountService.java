@@ -1,7 +1,7 @@
-package org.example.backend.Application.service;
+package org.example.backend.application.service;
 
-import org.example.backend.Application.Port.ICreateAccountRepo;
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.application.port.ICreateAccountRepo;
+import org.example.backend.domain.CreateAccountModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

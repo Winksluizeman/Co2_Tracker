@@ -1,4 +1,4 @@
-package org.example.backend.Api.dto;
+package org.example.backend.api.dto;
 
 import lombok.Getter;
 import lombok.Setter;

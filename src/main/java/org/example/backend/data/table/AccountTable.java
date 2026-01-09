@@ -1,4 +1,4 @@
-package org.example.backend.Data.table;
+package org.example.backend.data.table;
 
 import jakarta.persistence.*;
 import lombok.Setter;

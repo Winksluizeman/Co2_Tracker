@@ -1,7 +1,7 @@
-package org.example.backend.Api.converter;
+package org.example.backend.api.converter;
 
-import org.example.backend.Api.dto.CreateAccountDto;
-import org.example.backend.Domain.CreateAccountModel;
+import org.example.backend.api.dto.CreateAccountDto;
+import org.example.backend.domain.CreateAccountModel;
 import org.springframework.stereotype.Component;
 
 @Component
