@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/register")
 public class CreateAccountController {
 
     private final CreateAccountService createAccountService;
-    private final CreateAccountConverter converter;
+    private final CreateAccountConverter createAccountConverter;
 
-    public CreateAccountController(CreateAccountService createAccountService, CreateAccountConverter converter) {
+    public CreateAccountController(CreateAccountService createAccountService, CreateAccountConverter createAccountConverter) {
         this.createAccountService = createAccountService;
-        this.converter = converter;
+        this.createAccountConverter = createAccountConverter;
     }
 
     @PostMapping
