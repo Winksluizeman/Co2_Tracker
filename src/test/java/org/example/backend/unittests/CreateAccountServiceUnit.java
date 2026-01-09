@@ -1,4 +1,4 @@
-package org.example.backend.Unittests;
+package org.example.backend.unittests;
 
 import org.example.backend.application.port.ICreateAccountRepo;
 import org.example.backend.application.service.CreateAccountService;

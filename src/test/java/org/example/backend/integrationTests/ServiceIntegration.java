@@ -1,4 +1,4 @@
-package org.example.backend.IntegrationTests;
+package org.example.backend.integrationTests;
 
 import org.example.backend.application.port.ICreateAccountRepo;
 import org.example.backend.domain.CreateAccountModel;
