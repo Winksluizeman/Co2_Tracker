@@ -1,4 +1,4 @@
-package org.example.backend.e2e;
+package org.example.backend.e2E;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +18,18 @@ class CreateAccountE2ETest {
 
     @Test
     void shouldCreateAccountEndToEnd() throws Exception {
-        mockMvc.perform(post("/accounts")
+        mockMvc.perform(post("/register")
                         .contentType("application/json")
                         .content("""
                     {
-                        "username": "Wink",
+                        "username": "Jeroen",
                         "age": 21,
-                        "email": "wink@example.com",
+                        "email": "Jeroen@Gmail.com",
                         "password": "Password123"
                     }
                 """))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("Wink"))
-                .andExpect(jsonPath("$.email").value("wink@example.com"));
+                .andExpect(jsonPath("$.username").value("Jeroen"))
+                .andExpect(jsonPath("$.email").value("Jeroen@Gmail.com"));
     }
 }
