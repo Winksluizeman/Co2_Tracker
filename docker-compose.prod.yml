@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  backend:
+    image: ghcr.io/wink/co2tracker
+    container_name: co2-backend
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: ghcr.io/wink/co2frontenddocker
+    container_name: co2-frontend
+    restart: always
+    ports:
+      - "80:80"
+
+  db:
+    image: postgres:16
+    container_name: co2-db
+    restart: always
+    environment:
+      POSTGRES_DB: co2tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Appel12
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
