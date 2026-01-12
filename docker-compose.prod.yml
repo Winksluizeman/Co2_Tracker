@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   backend:
-    image: ghcr.io/wink/co2tracker
+    image: ghcr.io/winksluizeman/co2tracker-backend:IMAGE_TAG
     container_name: co2-backend
     restart: always
     environment:
@@ -11,7 +11,7 @@ services:
       - "8080:8080"
 
   frontend:
-    image: ghcr.io/wink/co2frontenddocker
+    image: ghcr.io/winksluizeman/co2tracker-frontend:IMAGE_TAG
     container_name: co2-frontend
     restart: always
     ports:
