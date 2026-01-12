@@ -64,3 +64,12 @@ jobs:
 
       - name: Push backend image
         run: docker push ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
+
+      - name: Generate JaCoCo report
+        run: ./gradlew jacocoTestReport
+
+      - name: Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v4
+        with:
+            name: jacoco-report
+            path: build/reports/jacoco/test
