@@ -1,9 +1,29 @@
 version: "3.9"
 
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: co2-backend-dev
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: co2-frontend-dev
+    ports:
+      - "3000:80"
+
   db:
     image: postgres:16
-    container_name: co2-db
+    container_name: co2-db-dev
     environment:
       POSTGRES_DB: co2tracker
       POSTGRES_USER: postgres
@@ -11,56 +31,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d co2tracker"]
-      interval: 5s
-      retries: 5
-      start_period: 10s
-
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: runtime
-    container_name: co2-backend
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/co2tracker
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Appel12
-      SPRING_PROFILES_ACTIVE: docker
-    ports:
-      - "8080:8080"
-
-  frontend:
-    build:
-      context: ../co2Frontend
-      dockerfile: Dockerfile
-    container_name: co2-frontend
-    depends_on:
-      backend:
-        condition: service_started
-    ports:
-      - "5173:5173"
-
-  tests:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: test-build
-    container_name: co2-backend-tests
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/co2tracker
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Appel12
-      SPRING_PROFILES_ACTIVE: test
-    command: ./gradlew clean test --no-daemon
+      - db-data-dev:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  db-data-dev:
