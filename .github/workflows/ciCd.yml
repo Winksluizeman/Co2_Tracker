@@ -43,6 +43,12 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: Appel12
           SPRING_PROFILES_ACTIVE: test
 
+      - name: Upload JUnit test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-reports
+          path: build/test-results/test
+
   build-and-push:
     needs: build-test
     runs-on: ubuntu-latest
