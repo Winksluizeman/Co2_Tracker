@@ -14,9 +14,7 @@ services:
       - db
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/winksluizeman/co2tracker-frontend:latest
     container_name: co2-frontend-dev
     ports:
       - "3000:80"

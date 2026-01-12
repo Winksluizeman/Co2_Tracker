@@ -58,9 +58,3 @@ jobs:
 
       - name: Push backend image
         run: docker push ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
-
-      - name: Build frontend image
-        run: docker build -t ghcr.io/winksluizeman/co2tracker-frontend:${{ github.sha }} ./frontend
-
-      - name: Push frontend image
-        run: docker push ghcr.io/winksluizeman/co2tracker-frontend:${{ github.sha }}
