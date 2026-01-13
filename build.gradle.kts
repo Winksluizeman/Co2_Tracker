@@ -1,6 +1,7 @@
 plugins {
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.6"
+    id("org.sonarqube") version "7.2.2.6593"
 
     jacoco
     java
@@ -60,5 +61,12 @@ tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         html.required.set(true)
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "Co2Tracker")
+        property("sonar.projectName", "Co2Tracker")
     }
 }
