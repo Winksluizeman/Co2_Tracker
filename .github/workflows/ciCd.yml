@@ -62,29 +62,14 @@ jobs:
           name: jacoco-report
           path: build/reports/jacoco/test
 
-  build-and-push:
-    needs: [build-test, sonar-analysis]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u winksluizeman --password-stdin
-
-      - name: Build backend image
-        run: docker build -t ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }} .
-
-      - name: Push backend image
-        run: docker push ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
 
   sonar-analysis:
     needs: build-test
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -93,6 +78,9 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu'
+
+      - name: Make Gradle executable
+        run: chmod +x gradlew
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -113,3 +101,22 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: ./gradlew build sonar --info
+
+
+  build-and-push:
+    needs: [build-test, sonar-analysis]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u winksluizeman --password-stdin
+
+      - name: Build backend image
+        run: docker build -t ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }} .
+
+      - name: Push backend image
+        run: docker push ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
