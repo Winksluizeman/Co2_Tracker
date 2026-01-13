@@ -82,7 +82,6 @@ jobs:
         run: ./gradlew sonar --info
 
 
-
   build-and-push:
     needs: [build-test, sonar-analysis]
     runs-on: ubuntu-latest
