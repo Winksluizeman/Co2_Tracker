@@ -64,9 +64,11 @@ tasks.jacocoTestReport {
     }
 }
 
-sonar {
+sonarqube {
     properties {
-        property("sonar.projectKey", "Co2Tracker")
-        property("sonar.projectName", "Co2Tracker")
+        property("sonar.projectKey", "winksluizeman_Co2_Tracker")
+        property("sonar.organization", "winksluizeman")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
