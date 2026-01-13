@@ -30,12 +30,6 @@ jobs:
       - name: Generate JaCoCo coverage report
         run: ./gradlew jacocoTestReport
 
-      - name: Run SonarQube analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: ./gradlew build sonar --info
-
       - name: Upload JUnit test reports
         uses: actions/upload-artifact@v4
         with:
@@ -59,16 +53,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: 'zulu'
+          java-version: '21'
+          distribution: 'temurin'
 
       - name: Make Gradle executable
         run: chmod +x gradlew
 
-      - name: Cache SonarQube packages
+      - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
@@ -81,6 +75,11 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+
+      - name: Run SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar --info
 
 
   build-and-push:
