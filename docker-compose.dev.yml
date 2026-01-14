@@ -25,7 +25,7 @@ services:
     environment:
       POSTGRES_DB: co2tracker
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Appel12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
