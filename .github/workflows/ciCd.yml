@@ -69,6 +69,7 @@ jobs:
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
             --info
 
+
   build-and-push:
     needs: [build-test, sonar-analysis]
     runs-on: ubuntu-latest
