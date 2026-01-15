@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   backend:
-    image: ghcr.io/winksluizeman/co2tracker-backend:IMAGE_TAG
+    image: ghcr.io/winksluizeman/co2tracker-backend:latest
     container_name: co2-backend
     restart: always
     environment:
@@ -13,7 +13,7 @@ services:
       - db
 
   frontend:
-    image: ghcr.io/winksluizeman/co2tracker-frontend:IMAGE_TAG
+    image: ghcr.io/winksluizeman/co2tracker-frontend:latest
     container_name: co2-frontend
     restart: always
     ports:
@@ -29,6 +29,14 @@ services:
       POSTGRES_PASSWORD: Appel12
     volumes:
       - db-data:/var/lib/postgresql/data
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup --include-restarting
 
 volumes:
   db-data:

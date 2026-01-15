@@ -83,19 +83,30 @@ jobs:
 
 
   build-and-push:
-#    needs: [build-test, sonar-analysis]
+    needs: [build-test, sonar-analysis]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u winksluizeman --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build backend image
-        run: docker build -t ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }} .
-
-      - name: Push backend image
-        run: docker push ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/winksluizeman/co2tracker-backend:latest
+            ghcr.io/winksluizeman/co2tracker-backend:${{ github.sha }}
