@@ -70,10 +70,10 @@ sonarqube {
     properties {
         property("sonar.projectKey", "Winksluizeman_Co2_Tracker")
         property("sonar.organization", "Winksluizeman")
-        property("sonar.host.url", System.getenv("SONAR_HOST_URL"))
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
+        property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.gradle.skipCompile", "true")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
+
 
