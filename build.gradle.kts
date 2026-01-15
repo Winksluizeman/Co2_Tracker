@@ -1,7 +1,9 @@
 plugins {
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.sonarqube") version "7.2.2.6593"
+
+    // JUISTE SonarQube plugin
+    id("org.sonarqube") version "4.4.1.3373"
 
     jacoco
     java
@@ -64,11 +66,14 @@ tasks.jacocoTestReport {
     }
 }
 
-sonar {
+sonarqube {
     properties {
         property("sonar.projectKey", "Winksluizeman_Co2_Tracker")
         property("sonar.organization", "Winksluizeman")
-        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.host.url", System.getenv("SONAR_HOST_URL"))
+        property("sonar.login", System.getenv("SONAR_TOKEN"))
+        property("sonar.gradle.skipCompile", "true")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
+
