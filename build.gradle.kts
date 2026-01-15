@@ -69,7 +69,7 @@ tasks.jacocoTestReport {
 sonarqube {
     properties {
         property("sonar.projectKey", "Winksluizeman_Co2_Tracker")
-        property("sonar.organization", "Winksluizeman")
+        property("sonar.organization", "winksluizeman")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.gradle.skipCompile", "true")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
