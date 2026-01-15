@@ -63,10 +63,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
       - name: Run SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./gradlew sonar \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${SONAR_TOKEN} \
+            -Dsonar.organization=winksluizeman \
+            -Dsonar.projectKey=Winksluizeman_Co2_Tracker \
+            -Dsonar.host.url=https://sonarcloud.io \
             --info
 
 
