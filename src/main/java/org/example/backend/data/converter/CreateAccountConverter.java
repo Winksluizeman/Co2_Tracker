@@ -5,15 +5,16 @@ import org.example.backend.domain.CreateAccountModel;
 
 public class CreateAccountConverter {
 
-    public static AccountTable toTable(CreateAccountModel createAccountModel)
-    {
-        final AccountTable account = new AccountTable();
+    public static AccountTable toTable(CreateAccountModel model) {
+        AccountTable table = new AccountTable();
+        table.setUsername(model.getUsername());
+        table.setEmail(model.getEmail());
+        table.setAge(model.getAge());
 
-        account.setAge(createAccountModel.getAge());
-        account.setEmail(createAccountModel.getEmail());
-        account.setUsername(createAccountModel.getUsername());
-        account.setPassword(createAccountModel.getPassword());
-
-        return account;
+        table.setPassword(model.getPassword());
+        return table;
     }
 }
+
+
+
