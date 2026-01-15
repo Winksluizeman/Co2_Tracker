@@ -1,21 +1,18 @@
 plugins {
-    id("java")
     id("org.springframework.boot") version "3.5.6"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("io.spring.dependency-management") version "1.1.6"
+    id("org.sonarqube") version "7.2.2.6593"
 
-    // SonarQube plugin (correcte versie)
-    id("org.sonarqube") version "4.4.1.3373"
-
-    // Code coverage
     jacoco
+    java
 }
 
-group = "org.example"
+group = "org.example.backend"
 version = "0.0.1-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(org.gradle.jvm.toolchain.JavaLanguageVersion.of(21))
     }
 }
 
@@ -24,49 +21,54 @@ repositories {
 }
 
 dependencies {
-
-    // Spring Boot starters
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-
-    // Database driver (pas aan naar jouw DB)
-    runtimeOnly("com.mysql:mysql-connector-j")
-
-    // BCrypt hashing
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.security:spring-security-crypto")
 
-    // Test dependencies
+    implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:mysql")
+    testImplementation("org.mockito:mockito-core:5.12.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
+
+    testImplementation("org.testcontainers:junit-jupiter:1.20.1")
+    testImplementation("org.testcontainers:postgresql:1.20.1")
+
+
+    implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+
+
+    //Automatische setters en getters via Lombok
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-
-jacoco {
-    toolVersion = "0.8.11"
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+
     reports {
         xml.required.set(true)
         html.required.set(true)
     }
 }
 
-sonarqube {
+sonar {
     properties {
-        property("sonar.projectKey", "Co2_Tracker")
-        property("sonar.organization", "winksluizeman")
-        property("sonar.host.url", System.getenv("SONAR_HOST_URL"))
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
-
-        // Coverage
-        property("sonar.java.coveragePlugin", "jacoco")
+        property("sonar.projectKey", "Winksluizeman_Co2_Tracker")
+        property("sonar.organization", "Winksluizeman")
+        property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
