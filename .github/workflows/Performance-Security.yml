@@ -1,0 +1,88 @@
+name: Quality Pipeline
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+
+  jmeter-test:
+    name: Performance Tests (JMeter)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install JMeter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.2.tgz
+          tar -xzf apache-jmeter-5.6.2.tgz
+          mv apache-jmeter-5.6.2 jmeter
+
+      - name: Prepare results directory
+        run: |
+          rm -rf results
+          mkdir -p results/report
+
+      - name: Run JMeter testplan
+        run: |
+          ./jmeter/bin/jmeter \
+            -n \
+            -t tests/performance/testplan.jmx \
+            -l results/results.jtl \
+            -e -o results/report
+
+      - name: Upload raw results
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-results
+          path: results/results.jtl
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-html-report
+          path: results/report
+
+
+  zap-scan:
+    name: Security Scan (OWASP ZAP Baseline)
+    runs-on: ubuntu-latest
+    needs: jmeter-test   # eerst performance, dan security
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Start backend
+        run: |
+          ./gradlew clean build --refresh-dependencies
+        # Of: ./mvnw spring-boot:run
+
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep -q UP; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend did not start in time"
+          exit 1
+
+      - name: Run ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.11.0
+        with:
+          target: "http://localhost:8080"
+          cmd_options: "-a"
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap_report.html
