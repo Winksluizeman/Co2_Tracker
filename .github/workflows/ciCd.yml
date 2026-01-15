@@ -46,10 +46,12 @@ jobs:
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-      - run: ./gradlew sonar \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-          --info
+      - run: |
+          ./gradlew sonar \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            --info
+
 
   build-and-push:
     needs: [build-test, sonar-analysis]
