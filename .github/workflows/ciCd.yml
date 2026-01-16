@@ -52,7 +52,7 @@ jobs:
 
 
   # ============================================================
-  # 2. SONARCLOUD ANALYSIS (Automatic Analysis is UIT)
+  # 2. SONARCLOUD ANALYSIS
   # ============================================================
   sonar-analysis:
     needs: build-test
@@ -100,10 +100,10 @@ jobs:
 
 
   # ============================================================
-  # 3. BUILD & PUSH DOCKER IMAGE
+  # 3. BUILD & PUSH DOCKER IMAGE (BACKEND)
   # ============================================================
   build-and-push:
-    needs: [build-test, sonar-analysis]
+    needs: build-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
 
@@ -146,9 +146,8 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
 
-
   # ============================================================
-  # 4. JMETER PERFORMANCE TESTS
+  # 4. JMETER PERFORMANCE TESTS (tegen Docker-backend)
   # ============================================================
   jmeter-test:
     needs: build-test
@@ -173,22 +172,31 @@ jobs:
             mv apache-jmeter-5.6.2 jmeter
           fi
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-      - name: Set up JDK 21
+      - name: Build backend JAR
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build backend
         run: ./gradlew build -x test
 
-      - name: Start backend
+      - name: Build backend Docker image
+        run: docker build -t backend-perf .
+
+      - name: Create Docker network for perf
+        run: docker network create perfnet
+
+      - name: Start backend container for JMeter
         run: |
-          nohup java -jar build/libs/*.jar --spring.profiles.active=test &
-          sleep 10
+          docker run -d \
+            --name backend-perf \
+            --network perfnet \
+            -p 8081:8080 \
+            backend-perf
 
       - name: Prepare results directory
         run: |
@@ -201,7 +209,9 @@ jobs:
             -n \
             -t src/tests/performance/testplan.jmx \
             -l results/results.jtl \
-            -e -o results/report
+            -e -o results/report \
+            -Jbackend.host=localhost \
+            -Jbackend.port=8081
 
       - uses: actions/upload-artifact@v4
         with:
@@ -215,10 +225,10 @@ jobs:
 
 
   # ============================================================
-  # 5. OWASP ZAP SECURITY SCAN (WERKENDE DOCKER-VERSIE)
+  # 5. OWASP ZAP SECURITY SCAN (tegen Docker-backend)
   # ============================================================
   zap-scan:
-    needs: jmeter-test
+    needs: [build-test]
     runs-on: ubuntu-latest
 
     steps:
@@ -243,7 +253,25 @@ jobs:
         run: docker network create zapnet
 
       - name: Start backend container
-        run: docker run -d --network zapnet --name backend backend-app
+        run: |
+          docker run -d \
+            --network zapnet \
+            --name backend \
+            -p 8080:8080 \
+            backend-app
+
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health; then
+              echo "Backend is up"
+              exit 0
+            fi
+            echo "Waiting for backend..."
+            sleep 2
+          done
+          echo "Backend did not start"
+          exit 1
 
       - name: Run ZAP Baseline Scan
         run: |
@@ -253,11 +281,8 @@ jobs:
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t http://backend:8080 \
-            -J report_json.json \
-            -w report_md.md \
-            -r report_html.html \
+            --output /tmp \
             -a
-
 
       - uses: actions/upload-artifact@v4
         with:
