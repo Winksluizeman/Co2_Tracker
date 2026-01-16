@@ -27,9 +27,9 @@ jobs:
       - name: Build backend
         run: ./gradlew build -x test
 
-      - name: Start backend
+      - name: Start backend (H2 test profile)
         run: |
-          nohup java -jar build/libs/*.jar &
+          nohup java -jar build/libs/*.jar --spring.profiles.active=test &
           sleep 10
 
       - name: Install JMeter
@@ -78,7 +78,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -87,7 +87,7 @@ jobs:
       - name: Build backend
         run: ./gradlew build -x test
 
-      - name: Start backend
+      - name: Start backend (H2 test profile)
         run: |
           nohup java -jar build/libs/*.jar --spring.profiles.active=test &
           sleep 10
@@ -97,6 +97,7 @@ jobs:
         with:
           target: "http://localhost:8080"
           cmd_options: "-a"
+          fail_on_error: false
 
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4

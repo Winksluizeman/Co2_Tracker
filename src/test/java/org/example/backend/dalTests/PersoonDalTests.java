@@ -2,22 +2,27 @@ package org.example.backend.dalTests;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.example.backend.TestConfig;
 import org.example.backend.data.repository.CreateAccountRepo;
 import org.example.backend.data.table.AccountTable;
 import org.example.backend.domain.CreateAccountModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(TestConfig.class)
 @Transactional
 class CreateAccountRepoTests {
+
 
     @Autowired
     private CreateAccountRepo repo;
