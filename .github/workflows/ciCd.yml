@@ -195,7 +195,7 @@ jobs:
           docker run -d \
             --name backend-perf \
             --network perfnet \
-            -p 9090:8080 \
+            -p 9090:9090 \
             backend-perf
 
       - name: Prepare results directory
@@ -257,13 +257,13 @@ jobs:
           docker run -d \
             --network zapnet \
             --name backend \
-            -p 9090:8080 \
+            -p 9090:9090 \
             backend-app
 
       - name: Wait for backend to be ready
         run: |
           for i in {1..30}; do
-            if curl -s http://localhost:8082/actuator/health; then
+            if curl -s http://localhost:9090/actuator/health; then
               echo "Backend is up"
               exit 0
             fi
@@ -280,7 +280,7 @@ jobs:
             -v $(pwd):/zap/wrk:ro \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
-            -t http://backend:8080 \
+            -t http://backend:9090 \
             --output /tmp \
             -a
 
