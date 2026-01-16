@@ -280,7 +280,7 @@ jobs:
             -v $(pwd):/zap/wrk:ro \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
-            -t http://backend:8080 \
+            -t http://backend:8082 \
             --output /tmp \
             -a
 
