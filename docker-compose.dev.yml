@@ -31,5 +31,15 @@ services:
     volumes:
       - db-data-dev:/var/lib/postgresql/data
 
+  dbbackup:
+    image: postgres:16
+    container_name: co2-dbbackup-dev
+    command: ["postgres"]
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-backup-dev:/var/lib/postgresql/data
+
 volumes:
   db-data-dev:
+  db-backup-dev:

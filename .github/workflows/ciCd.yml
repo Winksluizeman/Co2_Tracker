@@ -248,7 +248,8 @@ jobs:
       - name: Run ZAP Baseline Scan
         run: |
           docker run --network zapnet \
-            -v $(pwd):/zap/wrk \
+            --user root \
+            -v $(pwd):/zap/wrk:ro \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t http://backend:8080 \
@@ -256,6 +257,7 @@ jobs:
             -w report_md.md \
             -r report_html.html \
             -a
+
 
       - uses: actions/upload-artifact@v4
         with:
