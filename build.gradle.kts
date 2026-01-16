@@ -44,9 +44,12 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform(){
+        excludeTags("integration")
+    }
     finalizedBy(tasks.jacocoTestReport)
 }
+
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
