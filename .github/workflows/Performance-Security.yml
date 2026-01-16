@@ -89,7 +89,7 @@ jobs:
 
       - name: Start backend
         run: |
-          nohup java -jar build/libs/*.jar &
+          nohup java -jar build/libs/*.jar --spring.profiles.active=test &
           sleep 10
 
       - name: Run ZAP Baseline Scan
