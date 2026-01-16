@@ -31,7 +31,8 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - run: chmod +x gradlew
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Run tests
         run: ./gradlew clean test --no-daemon --info
@@ -51,7 +52,7 @@ jobs:
 
 
   # ============================================================
-  # 2. SONARCLOUD ANALYSIS
+  # 2. SONARCLOUD ANALYSIS (Automatic Analysis is UIT)
   # ============================================================
   sonar-analysis:
     needs: build-test
@@ -83,7 +84,8 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - run: chmod +x gradlew
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Run SonarCloud analysis
         env:
@@ -147,8 +149,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Cache JMeter installation
         uses: actions/cache@v4
@@ -196,14 +197,12 @@ jobs:
             -l results/results.jtl \
             -e -o results/report
 
-      - name: Upload raw results
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: jmeter-results
           path: results/results.jtl
 
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: jmeter-html-report
           path: results/report
@@ -217,8 +216,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -258,20 +256,17 @@ jobs:
             -r report_html.html \
             -a
 
-      - name: Upload ZAP HTML report
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: zap-html-report
           path: report_html.html
 
-      - name: Upload ZAP Markdown report
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: zap-md-report
           path: report_md.md
 
-      - name: Upload ZAP JSON report
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: zap-json-report
           path: report_json.json
