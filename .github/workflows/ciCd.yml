@@ -195,7 +195,7 @@ jobs:
           docker run -d \
             --name backend-perf \
             --network perfnet \
-            -p 8081:8080 \
+            -p 9090:8080 \
             backend-perf
 
       - name: Prepare results directory
@@ -211,7 +211,7 @@ jobs:
             -l results/results.jtl \
             -e -o results/report \
             -Jbackend.host=localhost \
-            -Jbackend.port=8081
+            -Jbackend.port=9090
 
       - uses: actions/upload-artifact@v4
         with:
@@ -257,13 +257,13 @@ jobs:
           docker run -d \
             --network zapnet \
             --name backend \
-            -p 8080:8080 \
+            -p 9090:8080 \
             backend-app
 
       - name: Wait for backend to be ready
         run: |
           for i in {1..30}; do
-            if curl -s http://localhost:8080/actuator/health; then
+            if curl -s http://localhost:8082/actuator/health; then
               echo "Backend is up"
               exit 0
             fi
@@ -280,7 +280,7 @@ jobs:
             -v $(pwd):/zap/wrk:ro \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
-            -t http://backend:8082 \
+            -t http://backend:8080 \
             --output /tmp \
             -a
 
