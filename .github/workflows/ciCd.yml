@@ -40,12 +40,12 @@ jobs:
       - name: Generate Jacoco report
         run: ./gradlew jacocoTestReport
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: junit-test-reports
           path: build/test-results/test
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: jacoco-report
           path: build/reports/jacoco/test
@@ -213,12 +213,12 @@ jobs:
             -Jbackend.host=localhost \
             -Jbackend.port=9090
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: jmeter-results
           path: results/results.jtl
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: jmeter-html-report
           path: results/report
@@ -284,17 +284,17 @@ jobs:
             --output /tmp \
             -a
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: zap-html-report
           path: report_html.html
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: zap-md-report
           path: report_md.md
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: zap-json-report
           path: report_json.json
