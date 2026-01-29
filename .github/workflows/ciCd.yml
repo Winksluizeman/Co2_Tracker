@@ -22,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Cache Gradle
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -69,13 +69,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Cache SonarCloud
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.sonar/cache
           key: sonar-${{ runner.os }}
 
       - name: Cache Gradle
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -127,7 +127,7 @@ jobs:
           driver: docker-container
 
       - name: Cache Docker layers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /tmp/.buildx-cache
           key: docker-${{ runner.os }}-${{ github.sha }}
@@ -157,7 +157,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Cache JMeter installation
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: jmeter
           key: jmeter-${{ runner.os }}-5.6.2
